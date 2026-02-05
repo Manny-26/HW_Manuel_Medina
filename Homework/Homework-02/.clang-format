@@ -1,0 +1,8 @@
+BasedOnStyle: Chromium
+
+AccessModifierOffset: -4
+IndentAccessModifiers: false
+IndentWidth: 4
+NamespaceIndentation: All
+PackConstructorInitializers: Never
+
