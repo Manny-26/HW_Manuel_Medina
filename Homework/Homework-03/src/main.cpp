@@ -40,7 +40,7 @@ int main() {
             std::cout << "Enter width: ";
             std::cin >> width;
             double radius = width / 2;
-            std::cout << "The area of a cylinder is: " << pi * (radius * radius) * height;
+            std::cout << "The area of a cylinder is: " << 2 * pi * radius * (radius + height);
             break;
         }
     }
