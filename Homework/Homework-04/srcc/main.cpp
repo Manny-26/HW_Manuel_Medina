@@ -3,7 +3,7 @@
 #include <string>
 #include <array>
 
-constexpr std::array<const char*, 12> MONTHS{
+constexpr std::array<const char *, 12> MONTHS{
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 };
@@ -62,7 +62,7 @@ int year_start(int year) {
 int main() {
     int year;
 
-    std::cout << "Enter a year from the common era from 1900 or later: ";
+    std::cout << "Enter a year from the common era: ";
     std::cin >> year;
 
     while (year < 1) {
