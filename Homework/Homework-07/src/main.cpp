@@ -67,10 +67,6 @@ private:
         // 3) Correct guess means guess matches overheatingMotors EXACTLY (same 1-bits).
         // 4) If incorrect guess: call updateOverheating() to add one more overheating motor.
         // 5) Return true ONLY if correct guess.
-        if ((overheatingMotors & guess) == 0) {
-            updateOverheating();
-            return false;
-        }
         if (overheatingMotors == guess){
             motorState ^= (overheatingMotors & guess);
             displayStatus();
