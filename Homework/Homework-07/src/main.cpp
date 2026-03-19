@@ -115,7 +115,7 @@ int  checkInput(const std::string& s) {
 
 std::string cmdLower(std::string cmd) {
     for (char &c : cmd) {
-       std::tolower(c);
+       c = std::tolower(c);
     }
     return cmd;
 }
@@ -145,7 +145,7 @@ int main() {
     std::string cmd;
     std::cin >> cmd;
 
-    std::cout << cmdLower(cmd);
+    cmd = cmdLower(cmd);
 
     if (cmd == "q" || cmd == "Q")
         return 0;
