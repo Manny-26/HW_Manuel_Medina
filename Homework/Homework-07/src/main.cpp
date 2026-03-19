@@ -69,13 +69,19 @@ private:
         // 5) Return true ONLY if correct guess.
         if ((overheatingMotors & guess) == 0) {
             updateOverheating();
-            displayStatus();
             return false;
         }
         motorState ^= (overheatingMotors & guess);
         displayStatus();
         return overheatingMotors == guess;
     }
+
+    bool win(uint8_t guess)
+        {
+            if (guess == overheatingMotors)
+                return true;
+            return false;
+        }
 
     friend std::ostream& operator<<(std::ostream& lhs, MotorStatus rhs) {
         return lhs << "Motor State (ON/OFF): " << std::bitset<8>(rhs.motorState) << '\n'
@@ -113,9 +119,9 @@ int  checkInput(const std::string& s) {
         return -1;
 }
 
-std::string cmdLower(std::string cmd) {
+std::string& cmdLower(std::string& cmd) {
     for (char &c : cmd) {
-       c = std::tolower(c);
+       c = static_cast<char>(std::tolower(c));
     }
     return cmd;
 }
@@ -140,62 +146,67 @@ int main() {
     std::cout << "  Help               -- show this command list\n";
     std::cout << "  q                  -- quit\n";
     std::cout << "========================================\n\n";
-    std::cout << "Enter Guess/Command: ";
+    std::cout << "Enter Command: ";
 
-    std::string cmd;
-    std::cin >> cmd;
+    while (motorStatus.win(guess) == false) {
+        std::string cmd;
+        std::cin >> cmd;
+        cmdLower(cmd);
 
-    cmd = cmdLower(cmd);
+        if (cmd == "q" || cmd == "Q")
+            return 0;
+        if (cmd == "help") {
+            std::cout << "\n========================================\n";
+            std::cout << "          MOTOR MELTDOWN\n";
+            std::cout << "========================================\n";
+            std::cout << "Goal: identify EVERY overheating motor.\n";
+            std::cout << "      Wrong or incomplete guesses add more overheating motors!\n\n";
+            std::cout << "Commands:\n";
+            std::cout << "  Submit <bits/hex>  -- submit your final guess (e.g. submit 00100100)\n";
+            std::cout << "  or <bits/hex>      -- OR  your guess with input\n";
+            std::cout << "  and <bits/hex>     -- AND your guess with input\n";
+            std::cout << "  XOR <bits/hex>     -- XOR your guess with input\n";
+            std::cout << "  Clear              -- reset your guess to 00000000\n";
+            std::cout << "  Status             -- show motor ON/OFF state and turn count\n";
+            std::cout << "  Guess              -- show your current guess\n";
+            std::cout << "  Help               -- show this command list\n";
+            std::cout << "  q                  -- quit\n";
+            std::cout << "========================================\n\n";
+            std::cout << "Enter Command: ";
+        }
+        if (cmd == "guess")
+            std::cout << guess;
 
-    if (cmd == "q" || cmd == "Q")
-        return 0;
-    if (cmd == "help") {
-        std::cout << "\n========================================\n";
-        std::cout << "          MOTOR MELTDOWN\n";
-        std::cout << "========================================\n";
-        std::cout << "Goal: identify EVERY overheating motor.\n";
-        std::cout << "      Wrong or incomplete guesses add more overheating motors!\n\n";
-        std::cout << "Commands:\n";
-        std::cout << "  Submit <bits/hex>  -- submit your final guess (e.g. submit 00100100)\n";
-        std::cout << "  or <bits/hex>      -- OR  your guess with input\n";
-        std::cout << "  and <bits/hex>     -- AND your guess with input\n";
-        std::cout << "  XOR <bits/hex>     -- XOR your guess with input\n";
-        std::cout << "  Clear              -- reset your guess to 00000000\n";
-        std::cout << "  Status             -- show motor ON/OFF state and turn count\n";
-        std::cout << "  Guess              -- show your current guess\n";
-        std::cout << "  Help               -- show this command list\n";
-        std::cout << "  q                  -- quit\n";
-        std::cout << "========================================\n\n";
-        std::cout << "Enter Guess/Command: ";
-    }
-    if (cmd == "guess")
-        std::cout << guess;
+        if (cmd == "status")
+            std::cout << motorStatus << '\n';
 
-    if (cmd == "status")
-        std::cout << motorStatus << '\n';
+        if (cmd == "clear")
+            guess = 0;
+        if (cmd == "or") {
+            uint8_t mutator = 0;
+            std::cout << "Input: ";
+            std::cin >> mutator;
 
-    if (cmd == "clear")
-        guess = 0;
-    if (cmd == "or") {
-        uint8_t mutator = 0;
-        std::cout << "Input: ";
-        std::cin >> mutator;
+            guess |= mutator;
+        }
+        if (cmd == "and") {
+            uint8_t mutator = 0;
+            std::cout << "Input: ";
+            std::cin >> mutator;
 
-        guess |= mutator;
-    }
-    if (cmd == "and") {
-        uint8_t mutator = 0;
-        std::cout << "Input: ";
-        std::cin >> mutator;
+            guess &= mutator;
+        }
+        if (cmd == "xor") {
+            uint8_t mutator = 0;
+            std::cout << "Input: ";
+            std::cin >> mutator;
 
-        guess &= mutator;
-    }
-    if (cmd == "xor") {
-        uint8_t mutator = 0;
-        std::cout << "Input: ";
-        std::cin >> mutator;
-
-        guess ^= mutator;
+            guess ^= mutator;
+        }
+        if (cmd == "submit") {
+            motorStatus.turnOff(guess);
+        }
+        std::cout << "Enter command: ";
     }
 
 }
