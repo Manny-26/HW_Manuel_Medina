@@ -175,31 +175,35 @@ int main() {
             std::cout << "Enter Command: ";
         }
         if (cmd == "guess")
-            std::cout << guess;
+            std::cout << std::bitset<8>(guess) << '\n';
 
         if (cmd == "status")
             std::cout << motorStatus << '\n';
 
         if (cmd == "clear")
             guess = 0;
+
         if (cmd == "or") {
-            uint8_t mutator = 0;
+            std::string sMutator;
             std::cout << "Input: ";
-            std::cin >> mutator;
+            std::cin >> sMutator;
+            int mutator = checkInput(sMutator);
 
             guess |= mutator;
         }
         if (cmd == "and") {
-            uint8_t mutator = 0;
+            std::string sMutator;
             std::cout << "Input: ";
-            std::cin >> mutator;
+            std::cin >> sMutator;
+            int mutator = checkInput(sMutator);
 
             guess &= mutator;
         }
         if (cmd == "xor") {
-            uint8_t mutator = 0;
+            std::string sMutator;
             std::cout << "Input: ";
-            std::cin >> mutator;
+            std::cin >> sMutator;
+            int mutator = checkInput(sMutator);
 
             guess ^= mutator;
         }
