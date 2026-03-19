@@ -205,8 +205,6 @@ int main() {
             guess ^= mutator;
         }
         if (cmd == "submit") {
-            motorStatus.turnOff(guess);
-
             if (motorStatus.turnOff(guess)) {
                 std::cout << "All overheating motors were turned off, you win!!";
                 break;
