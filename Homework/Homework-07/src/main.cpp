@@ -72,8 +72,11 @@ private:
             displayStatus();
             return true;
         }
-        updateOverheating();
-        return false;
+        else
+        {
+            updateOverheating();
+            return false;
+        }
     }
 
 
