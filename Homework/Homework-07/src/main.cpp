@@ -71,17 +71,15 @@ private:
             updateOverheating();
             return false;
         }
-        motorState ^= (overheatingMotors & guess);
-        displayStatus();
-        return overheatingMotors == guess;
+        if (overheatingMotors == guess){
+            motorState ^= (overheatingMotors & guess);
+            displayStatus();
+            return true;
+        }
+        updateOverheating();
+        return false;
     }
 
-    bool win(uint8_t guess)
-        {
-            if (guess == overheatingMotors)
-                return true;
-            return false;
-        }
 
     friend std::ostream& operator<<(std::ostream& lhs, MotorStatus rhs) {
         return lhs << "Motor State (ON/OFF): " << std::bitset<8>(rhs.motorState) << '\n'
@@ -210,7 +208,7 @@ int main() {
         if (cmd == "submit") {
             motorStatus.turnOff(guess);
 
-            if (motorStatus.win(guess)) {
+            if (motorStatus.turnOff(guess)) {
                 std::cout << "All overheating motors were turned off, you win!!";
                 break;
             }
