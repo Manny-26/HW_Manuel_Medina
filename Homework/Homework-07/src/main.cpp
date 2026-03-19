@@ -148,7 +148,7 @@ int main() {
     std::cout << "========================================\n\n";
     std::cout << "Enter Command: ";
 
-    while (motorStatus.win(guess) == false) {
+    while (true) {
         std::string cmd;
         std::cin >> cmd;
         cmdLower(cmd);
@@ -209,8 +209,13 @@ int main() {
         }
         if (cmd == "submit") {
             motorStatus.turnOff(guess);
+
+            if (motorStatus.win(guess)) {
+                std::cout << "All overheating motors were turned off, you win!!";
+                break;
+            }
         }
         std::cout << "Enter command: ";
     }
-
+return 0;
 }
