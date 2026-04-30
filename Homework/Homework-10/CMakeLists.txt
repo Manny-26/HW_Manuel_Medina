@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(Homework-01)
+project(Homework-10)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -9,4 +9,4 @@ add_compile_options(-fsanitize=address -fsanitize=leak -fsanitize=undefined)
 
 add_link_options(-fsanitize=address -fsanitize=leak -fsanitize=undefined)
 
-add_executable(Homework-01 src/main.cpp)
+add_executable(Homework-10 src/main.cpp)
